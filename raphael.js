@@ -3188,6 +3188,53 @@ window.Raphael = (function () {
         }
         return out;
     };
+
+    Paper[proto].printText = function (x, y, string, font, size, origin) {
+	return {
+		rotate : function(degree, center, cy){
+			var currentX = 0, nextX = 0;
+			var centerX = this.set[0].getBBox().x;
+			var centerY = this.set[0].getBBox().y + this.set[0].getBBox().height;
+	
+			if(center === true){
+				centerX = this.set[0].getBBox().x +
+								(this.set[this.set.length -1 ].getBBox().x
+										+ this.set[this.set.length -1 ].getBBox().width
+								- this.set[0].getBBox().x
+								)/2;
+				var minY = 0, maxY = 0;
+				for(var i = 0; i< this.set.length; i++){
+					minY = Math.min(minY, this.set[i].getBBox().y);
+					maxY = Math.max(maxY, this.set[i].getBBox().y + this.set[i].getBBox().height);
+				}
+				centerY = (maxY-minY)/2;
+			}else{
+				centerX = center;
+				centerY = cy;
+			}
+	
+			for(var i = 0; i<this.set.length; i++){
+				var deltaX = this.set[i].getBBox().width;
+				nextX += deltaX;
+				var deltaY = 0;
+	
+				if(this.opts && this.opts.debug){
+					var pap = this.set[i].paper;
+					var rect = paper.rect(this.set[i].getBBox().x,
+								this.set[i].getBBox().y,
+								this.set[i].getBBox().width,
+								this.set[i].getBBox().height
+					);
+					rect.attr({fill:'red', 'fill-opacity':.7});
+	
+					rect.rotate(degree, centerX, centerY);
+				}
+				this.set[i].rotate(degree, centerX, centerY);
+				currentX += this.set[i].getBBox().width;
+			}
+		},set : this.print(x, y, text, font, size, origin)
+	};
+    };
  
     R.format = function (token) {
         var args = R.is(arguments[1], "array") ? [0][concat](arguments[1]) : arguments,
