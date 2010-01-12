@@ -3232,7 +3232,7 @@ var obj = {
 				this.set[i].rotate(degree, centerX, centerY);
 				currentX += this.set[i].getBBox().width;
 			}
-		},set : this.print(x, y, text, font, size, origin)
+		},set : this.print(x, y, string, font, size, origin)
 	}
 	return obj;
     };
