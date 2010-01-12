@@ -3190,7 +3190,7 @@ window.Raphael = (function () {
     };
 
     Paper[proto].printText = function (x, y, string, font, size, origin) {
-	return {
+var obj = {
 		rotate : function(degree, center, cy){
 			var currentX = 0, nextX = 0;
 			var centerX = this.set[0].getBBox().x;
@@ -3233,7 +3233,8 @@ window.Raphael = (function () {
 				currentX += this.set[i].getBBox().width;
 			}
 		},set : this.print(x, y, text, font, size, origin)
-	};
+	}
+	return obj;
     };
  
     R.format = function (token) {
